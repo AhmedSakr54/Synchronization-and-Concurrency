@@ -6,7 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 #define SHARED 1
-#define ITER 3
+#define ITER 2000
 
 void *mmonitor(void *); 
 void *mcollector(void *);
@@ -56,14 +56,15 @@ void* mcounter(void * thread_data) {
     thread_number = (long) thread_data;
     int i = 0;
     while (i < ITER) {
-        int sleep_time = rand() % 10;
+        int sleep_time = rand() % 15;
         sleep(sleep_time);
         printf("Counter thread %ld: received a message\n", thread_number);
         int sem_value;
         sem_getvalue(&mutex_cnt, &sem_value);
-        if (sem_value < 0)
+        if (sem_value <= 0)
             printf("Counter thread %ld: waiting to write\n", thread_number);
         sem_wait(&mutex_cnt);
+        sleep(1);
         cnt++;
         printf("Counter thread %ld: now adding to counter, counter value = %d\n", thread_number, cnt);
         sem_post(&mutex_cnt);
