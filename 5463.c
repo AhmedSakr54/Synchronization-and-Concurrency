@@ -6,7 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 #define SHARED 1
-#define ITER 2000
+#define ITER 20
 
 void *mmonitor(void *); 
 void *mcollector(void *);
@@ -106,7 +106,7 @@ void * mcollector(void * thread_data) {
     int i = 0;
     int item;
     while (i < ITER) {
-        int sleep_time = rand() % 5;
+        int sleep_time = rand() % 5 + 1;
         sleep(sleep_time);
         int sem_value;
         sem_getvalue(&full, &sem_value);
